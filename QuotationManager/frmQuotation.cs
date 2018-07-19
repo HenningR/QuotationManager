@@ -639,8 +639,7 @@ namespace QuotationManager
 
         private void rebalanceStart(object sender, DoWorkEventArgs e)
         {
-            //int milliseconds = 2;
-            //Thread.Sleep(milliseconds);
+
             RebalanceGrid();
         }
 
