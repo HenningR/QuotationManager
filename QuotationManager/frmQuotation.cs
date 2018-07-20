@@ -16,7 +16,15 @@ namespace QuotationManager
     public partial class frmQuotation : Form
     {
 
+        #region Declarations
         System.Windows.Forms.BindingSource bindingSource = new System.Windows.Forms.BindingSource();
+        BackgroundWorker _worker = new BackgroundWorker();
+        BackgroundWorker _workerRebalance = new BackgroundWorker();
+        List<QuotationDetail> quoteList = new List<QuotationDetail>();
+        List<InventoryItem> currentInventoryItems = new List<InventoryItem>();
+        #endregion
+
+        #region Constructor
         public frmQuotation()
         {
             InitializeComponent();
@@ -24,10 +32,10 @@ namespace QuotationManager
             LoadinventoryGroups();
             LoadExistingQuotes();
             ClearQuoteDetail();
-
-
-
         }
+        #endregion
+
+        #region Methods
 
         private void LoadExistingQuotes()
         {
@@ -48,171 +56,12 @@ namespace QuotationManager
             dgView.DataSource = null;
         }
 
-
-        List<QuotationDetail> quoteList = new List<QuotationDetail>();
         private void LoadExistingQuoteDetail(int QuoteItemID)
         {
             quoteList = QuotationDetail.GetQuoteList(QuoteItemID);
             bindingSource = new System.Windows.Forms.BindingSource { DataSource = quoteList };
             dgView.DataSource = bindingSource;
         }
-
-
-        private void frmQuotation_Load(object sender, EventArgs e)
-        {
-
-
-            LoadExistingQuoteDetail(-1);
-
-
-
-
-            // DataGridViewRow row = (DataGridViewRow)dgView.Rows[0].Clone();
-
-            // dgView.DataSource = new List<QuotationDetail>();
-
-            // row.Cells[0].Value = "1";
-            // row.Cells[1].Value = "Foyer/Entrance Hall";
-            // row.Cells[8].Value = "1,433.60";
-            //row.Cells[9].Value = "143.36";
-            // row.Cells[10].Value = "1,576.96";
-
-            // dgView.Rows.Add(row);
-            //row = (DataGridViewRow)dgView.Rows[0].Clone();
-            //row.Cells[0].Value = "2";
-            //row.Cells[1].Value = "FLOOR DECORATIONS";
-            //row.Cells[8].Value = "281.60";
-            //row.Cells[9].Value = "28.16";
-            //row.Cells[10].Value = "309.76";
-
-
-
-            //dgView.Rows.Add(row);
-
-            //row = (DataGridViewRow)dgView.Rows[0].Clone();
-            //row.Cells[0].Value = "3";
-            //row.Cells[1].Value = "LOOSE RUGS";
-            //row.Cells[8].Value = "64.00";
-            //row.Cells[9].Value = "6.40";
-            //row.Cells[10].Value = "70.40";
-
-            //dgView.Rows.Add(row);
-
-            //row = (DataGridViewRow)dgView.Rows[0].Clone();
-            //row.Cells[0].Value = "";
-            //row.Cells[1].Value = "Rug(s)";
-            //row.Cells[2].Value = "ea";
-            //row.Cells[3].Value = 1;
-            //row.Cells[4].Value = 10;
-            //row.Cells[5].Value = 10;
-            //row.Cells[6].Value = "28";
-            //row.Cells[7].Value = "2.80";
-            //row.Cells[8].Value = "12.80";
-            //row.Cells[9].Value = "1.28";
-            //row.Cells[10].Value = "14.08";
-
-            //dgView.Rows.Add(row);
-            //row = (DataGridViewRow)dgView.Rows[0].Clone();
-            //row.Cells[0].Value = "";
-            //row.Cells[1].Value = "Underveldt";
-            //row.Cells[2].Value = "ea";
-            //row.Cells[3].Value = 1;
-            //row.Cells[4].Value = 10;
-            //row.Cells[5].Value = 10;
-            //row.Cells[6].Value = "28";
-            //row.Cells[7].Value = "2.80";
-            //row.Cells[8].Value = "12.80";
-            //row.Cells[9].Value = "1.28";
-            //row.Cells[10].Value = "14.08";
-
-            //dgView.Rows.Add(row);
-            //row = (DataGridViewRow)dgView.Rows[0].Clone();
-            //row.Cells[0].Value = "";
-            //row.Cells[1].Value = "Wrapping";
-            //row.Cells[2].Value = "ea";
-            //row.Cells[3].Value = 1;
-            //row.Cells[4].Value = 10;
-            //row.Cells[5].Value = 10;
-            //row.Cells[6].Value = "28";
-            //row.Cells[7].Value = "2.80";
-            //row.Cells[8].Value = "12.80";
-            //row.Cells[9].Value = "1.28";
-            //row.Cells[10].Value = "14.08";
-
-            //dgView.Rows.Add(row);
-        }
-
-        private void LoadinventoryGroups()
-        {
-            cmbGroups.DataSource = null;
-            cmbGroups.Items.Clear();
-            List<Inventory> invList = new List<Inventory>();
-            Inventory inv = new Inventory();
-            invList = inv.GetInventoryList();
-            cmbGroups.DisplayMember = "Description";
-            cmbGroups.ValueMember = "InventoryID";
-
-            //foreach (Inventory item in invList)
-            //{
-            //    cmbGroups.Items.Add(new { Text = item.Description, Value = item.InventoryID });
-            //}
-            cmbGroups.DataSource = invList;
-        }
-
-        private void dgView_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void btnNewQuotation_Click(object sender, EventArgs e)
-        {
-
-            cmbExistingQuotation.Visible = false;
-            txtNewQuotation.Visible = true;
-
-            btnOpenQuotation.Enabled = false;
-            btnCancelQuote.Enabled = true;
-            btnSaveQuote.Enabled = true;
-
-        }
-
-
-
-        private void btnCancelQuote_Click(object sender, EventArgs e)
-        {
-            cmbExistingQuotation.Visible = true;
-            txtNewQuotation.Visible = false;
-
-            btnOpenQuotation.Enabled = true;
-            btnCancelQuote.Enabled = false;
-            btnSaveQuote.Enabled = false;
-        }
-
-        private void btnSaveQuote_Click(object sender, EventArgs e)
-        {
-            if (txtNewQuotation.Text == "")
-            {
-                showLableInfo("No new quotation exist", InfoType.Error);
-            }
-
-            Quotation item = new Quotation();
-            item.Description = txtNewQuotation.Text;
-            if (item.Save(true) > 0)
-            {
-                LoadExistingQuotes();
-                ClearQuoteDetail();
-            }
-
-            cmbExistingQuotation.Visible = true;
-            txtNewQuotation.Visible = false;
-
-            btnOpenQuotation.Enabled = true;
-            btnCancelQuote.Enabled = false;
-            btnSaveQuote.Enabled = false;
-        }
-
-
-        BackgroundWorker _worker = new BackgroundWorker();
 
         private void showLableInfo(string text, InfoType infoType)
         {
@@ -251,6 +100,257 @@ namespace QuotationManager
             lblInfo.Visible = false;
         }
 
+        private void addHeader(string headerName,int quotationID)
+        {
+            QuotationDetail detail = new QuotationDetail();
+            detail.QuotationDetailID = -1;
+            detail.QuotationID = quotationID;
+            detail.ArtePercentage = 0;
+            detail.ArteValue = 0;
+            detail.Description = headerName;
+            detail.GrossPrice = 0;
+            detail.IsItem = false;
+            int levelIndex = 1;
+            if (quoteList.Count >= 1 && quoteList[quoteList.Count - 1].IsItem == false)
+            {
+                levelIndex = quoteList[quoteList.Count - 1].LevelIndex + 1;
+            }
+
+            detail.LevelIndex = levelIndex;
+            detail.MarkupPercentage = 0;
+            detail.MarkupValue = 0;
+            detail.Price = 0;
+            detail.Quantity = 0;
+            detail.QuoteOrder = dgView.Rows.Count;
+            detail.Total = 0;
+            detail.TotalValue = 0;
+            detail.Unit = "";
+            quoteList.Add(detail);
+        }
+
+        private void addItemDetail(InventoryItem invItem, int quotationID)
+        {
+            QuotationDetail detail = new QuotationDetail();
+            detail.QuotationDetailID = -1;
+            detail.QuotationID = quotationID;
+            detail.ArtePercentage = invItem.ArtePercentage;
+            detail.ArteValue = 0;
+            detail.Description = invItem.Description;
+            detail.GrossPrice = 0;
+            detail.IsItem = invItem.IsItem;
+            int levelIndex = 0;
+
+
+            detail.LevelIndex = levelIndex;
+            detail.MarkupPercentage = invItem.MarkupPercentage;
+            detail.MarkupValue = 0;
+            detail.Price = invItem.Price;
+            detail.Quantity = 0;
+            detail.QuoteOrder = dgView.Rows.Count;
+            detail.Total = 0;
+            detail.TotalValue = 0;
+            detail.Unit = invItem.Unit;
+            quoteList.Add(detail);
+        }
+
+        private void RebalanceGrid()
+        {
+            int quotationHeaderStart = 0;
+            int qoutationHeaderEnd = 0;
+            bool firstHeader = false;
+            bool firstItem = true;
+            int quoteCC = 0;
+            Dictionary<string, decimal> sumTotals = new Dictionary<string, decimal>();
+
+            foreach (QuotationDetail item in quoteList)
+            {
+                if (item.IsItem == false)
+                {
+                    if (firstItem == false)
+                    {
+                        foreach (KeyValuePair<string, decimal> valuePair in sumTotals)
+                        {
+
+                            for (int valStart = quotationHeaderStart; valStart <= qoutationHeaderEnd; valStart++)
+                            {
+                                if (valuePair.Key == "Total")
+                                {
+                                    quoteList[valStart].Total = valuePair.Value;
+                                }
+
+                                if (valuePair.Key == "TotalValue")
+                                {
+                                    quoteList[valStart].TotalValue = valuePair.Value;
+                                }
+
+                                if (valuePair.Key == "GrossPrice")
+                                {
+                                    quoteList[valStart].GrossPrice = valuePair.Value;
+                                }
+                            }
+
+
+
+                        }
+                        quotationHeaderStart = 0;
+                        qoutationHeaderEnd = 0;
+                    }
+
+
+                    if (firstHeader == false)
+                    {
+                        quotationHeaderStart = quoteCC;
+                    }
+                    qoutationHeaderEnd = quoteCC;
+
+
+
+                    firstHeader = true;
+                    firstItem = true;
+                }
+                else if (item.IsItem)
+                {
+                    if (firstItem)
+                    {
+                        sumTotals = new Dictionary<string, decimal>();
+                        sumTotals.Add("Total", item.Total);
+
+                        sumTotals.Add("TotalValue", item.TotalValue);
+                        sumTotals.Add("GrossPrice", item.GrossPrice);
+                    }
+                    else
+                    {
+                        sumTotals["Total"] = sumTotals["Total"] + item.Total;
+                        sumTotals["TotalValue"] = sumTotals["TotalValue"] + item.TotalValue;
+                        sumTotals["GrossPrice"] = sumTotals["GrossPrice"] + item.GrossPrice;
+                    }
+
+                    firstItem = false;
+                    firstHeader = false;
+                }
+                quoteCC += 1;
+            }
+
+            if (firstItem == false)
+            {
+                foreach (KeyValuePair<string, decimal> valuePair in sumTotals)
+                {
+                    for (int valStart = quotationHeaderStart; valStart <= qoutationHeaderEnd; valStart++)
+                    {
+                        if (valuePair.Key == "Total")
+                        {
+                            quoteList[valStart].Total = valuePair.Value;
+                        }
+
+                        if (valuePair.Key == "TotalValue")
+                        {
+                            quoteList[valStart].TotalValue = valuePair.Value;
+                        }
+
+                        if (valuePair.Key == "GrossPrice")
+                        {
+                            quoteList[valStart].GrossPrice = valuePair.Value;
+                        }
+                    }
+                }
+                quotationHeaderStart = 0;
+                qoutationHeaderEnd = 0;
+            }
+        }
+
+        private void LoadinventoryGroups()
+        {
+            cmbGroups.DataSource = null;
+            cmbGroups.Items.Clear();
+            List<Inventory> invList = new List<Inventory>();
+            Inventory inv = new Inventory();
+            invList = inv.GetInventoryList();
+            cmbGroups.DisplayMember = "Description";
+            cmbGroups.ValueMember = "InventoryID";
+
+            //foreach (Inventory item in invList)
+            //{
+            //    cmbGroups.Items.Add(new { Text = item.Description, Value = item.InventoryID });
+            //}
+            cmbGroups.DataSource = invList;
+        }
+
+        private void rebalanceStart(object sender, DoWorkEventArgs e)
+        {
+
+            RebalanceGrid();
+        }
+
+        private void rebalanceCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            bindingSource = new System.Windows.Forms.BindingSource { DataSource = quoteList };
+            dgView.DataSource = bindingSource;
+        }
+
+        #endregion
+
+        #region Events
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void frmQuotation_Load(object sender, EventArgs e)
+        {
+            LoadExistingQuoteDetail(-1);
+        }
+
+        private void dgView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void btnNewQuotation_Click(object sender, EventArgs e)
+        {
+
+            cmbExistingQuotation.Visible = false;
+            txtNewQuotation.Visible = true;
+
+            btnOpenQuotation.Enabled = false;
+            btnCancelQuote.Enabled = true;
+            btnSaveQuote.Enabled = true;
+
+        }
+
+        private void btnCancelQuote_Click(object sender, EventArgs e)
+        {
+            cmbExistingQuotation.Visible = true;
+            txtNewQuotation.Visible = false;
+
+            btnOpenQuotation.Enabled = true;
+            btnCancelQuote.Enabled = false;
+            btnSaveQuote.Enabled = false;
+        }
+
+        private void btnSaveQuote_Click(object sender, EventArgs e)
+        {
+            if (txtNewQuotation.Text == "")
+            {
+                showLableInfo("No new quotation exist", InfoType.Error);
+            }
+
+            Quotation item = new Quotation();
+            item.Description = txtNewQuotation.Text;
+            if (item.Save(true) > 0)
+            {
+                LoadExistingQuotes();
+                ClearQuoteDetail();
+            }
+
+            cmbExistingQuotation.Visible = true;
+            txtNewQuotation.Visible = false;
+
+            btnOpenQuotation.Enabled = true;
+            btnCancelQuote.Enabled = false;
+            btnSaveQuote.Enabled = false;
+        }
+
         private void cmbExistingQuotation_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -277,14 +377,12 @@ namespace QuotationManager
 
         private void btnAddCustomHeader_Click(object sender, EventArgs e)
         {
-
-            addHeader(txtCustomHeader.Text);
+            Quotation grpQuotationItem = (Quotation)cmbExistingQuotation.SelectedItem;
+            addHeader(txtCustomHeader.Text, grpQuotationItem.QuotationID);
             bindingSource = new System.Windows.Forms.BindingSource { DataSource = quoteList };
             dgView.DataSource = bindingSource;
 
         }
-
-
 
         private void dgView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
@@ -335,7 +433,6 @@ namespace QuotationManager
 
         }
 
-      
         private void dgView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             if (quoteList.Count > 0 && (e.RowIndex <= quoteList.Count - 1))
@@ -351,8 +448,8 @@ namespace QuotationManager
                     dgView.Rows[e.RowIndex].Cells["ArteValue"].Value = ((decimal)dgView.Rows[e.RowIndex].Cells["ARTEPerc"].Value / 100) * (decimal)dgView.Rows[e.RowIndex].Cells["GROSSPRICE"].Value;
                     dgView.Rows[e.RowIndex].Cells["GrandTOTAL"].Value = (decimal)dgView.Rows[e.RowIndex].Cells["GROSSPRICE"].Value + (decimal)dgView.Rows[e.RowIndex].Cells["ArteValue"].Value;
 
-                   
-             
+
+
 
                 }
             }
@@ -360,15 +457,7 @@ namespace QuotationManager
 
         }
 
-
-
-
-
-
-
-
-
-    private void dgView_CellLeave(object sender, DataGridViewCellEventArgs e)
+        private void dgView_CellLeave(object sender, DataGridViewCellEventArgs e)
         {
             if (quoteList.Count > 0 && (e.RowIndex <= quoteList.Count - 1))
             {
@@ -402,8 +491,6 @@ namespace QuotationManager
             }
         }
 
-
-        List<InventoryItem> currentInventoryItems = new List<InventoryItem>();
         private void cmbGroups_SelectedIndexChanged(object sender, EventArgs e)
         {
             currentInventoryItems = new List<InventoryItem>();
@@ -424,59 +511,13 @@ namespace QuotationManager
             }
         }
 
-
-
-        private void addHeader(string headerName)
+        private void btnRebalance_Click(object sender, EventArgs e)
         {
-            QuotationDetail detail = new QuotationDetail();
-            detail.QuotationDetailID = 2;
-            detail.QuotationID = 3;
-            detail.ArtePercentage = 0;
-            detail.ArteValue = 0;
-            detail.Description = headerName;
-            detail.GrossPrice = 0;
-            detail.IsItem = false;
-            int levelIndex = 1;
-            if (quoteList.Count >= 1 && quoteList[quoteList.Count - 1].IsItem == false)
-            {
-                levelIndex = quoteList[quoteList.Count - 1].LevelIndex + 1;
-            }
 
-            detail.LevelIndex = levelIndex;
-            detail.MarkupPercentage = 0;
-            detail.MarkupValue = 0;
-            detail.Price = 0;
-            detail.Quantity = 0;
-            detail.QuoteOrder = dgView.Rows.Count;
-            detail.Total = 0;
-            detail.TotalValue = 0;
-            detail.Unit = "";
-            quoteList.Add(detail);
-        }
-
-        private void addItemDetail(InventoryItem invItem)
-        {
-            QuotationDetail detail = new QuotationDetail();
-            detail.QuotationDetailID = 2;
-            detail.QuotationID = 3;
-            detail.ArtePercentage = invItem.ArtePercentage;
-            detail.ArteValue = 0;
-            detail.Description = invItem.Description;
-            detail.GrossPrice = 0;
-            detail.IsItem = invItem.IsItem;
-            int levelIndex = 0;
-
-
-            detail.LevelIndex = levelIndex;
-            detail.MarkupPercentage = invItem.MarkupPercentage;
-            detail.MarkupValue = 0;
-            detail.Price = invItem.Price;
-            detail.Quantity = 0;
-            detail.QuoteOrder = dgView.Rows.Count;
-            detail.Total = 0;
-            detail.TotalValue = 0;
-            detail.Unit = invItem.Unit;
-            quoteList.Add(detail);
+            _worker.WorkerReportsProgress = true;
+            _worker.DoWork += new System.ComponentModel.DoWorkEventHandler(rebalanceStart);
+            _worker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(rebalanceCompleted);
+            _worker.RunWorkerAsync();
         }
 
         private void btnAddQuotationSection_Click(object sender, EventArgs e)
@@ -485,6 +526,10 @@ namespace QuotationManager
             {
                 bool addAddisional = false;
                 InventoryItem grpItem = (InventoryItem)cmbSection.SelectedItem;
+
+                Quotation grpQuotationItem = (Quotation)cmbExistingQuotation.SelectedItem;
+
+
                 foreach (InventoryItem item in currentInventoryItems)
                 {
                     if (item.InventoryItemID == grpItem.InventoryItemID || addAddisional)
@@ -492,11 +537,11 @@ namespace QuotationManager
 
                         if (item.IsItem == false)
                         {
-                            addHeader(item.Description);
+                            addHeader(item.Description, grpQuotationItem.QuotationID);
                         }
                         else
                         {
-                            addItemDetail(item);
+                            addItemDetail(item, grpQuotationItem.QuotationID);
                         }
 
 
@@ -512,142 +557,47 @@ namespace QuotationManager
         }
 
 
+        #endregion
 
-
-
-
-        private void RebalanceGrid()
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            int quotationHeaderStart = -1;
-            int qoutationHeaderEnd = -1;
-            bool firstHeader = false;
-            bool firstItem = true;
-            int quoteCC = 0;
-            Dictionary<string, decimal> sumTotals = new Dictionary<string, decimal>();
-
-            foreach (QuotationDetail item in quoteList)
+            try
             {
-                if (item.IsItem == false)
+                if (quoteList.Count > 0)
                 {
-                    if (firstItem == false)
+                    int quotationID = quoteList[0].QuotationID;
+                    DatabaseModule dataMod = new DatabaseModule();
+                    dataMod.OpenDatabase();
+                    QuotationDetail.Delete(quotationID, true, dataMod);
+                   // dataMod.sqlConn.BeginTransaction();
+                  
+                    int lastQuoteCount = QuotationDetail.getLastQuoteDetailCount() + 1;
+                    
+                    dataMod.OpenDatabase();
+                    int orderCount = 0;
+                   
+                    foreach (QuotationDetail detail in quoteList)
                     {
-                        foreach (KeyValuePair<string, decimal> valuePair in sumTotals)
-                        {
-
-                            for (int valStart = quotationHeaderStart; valStart <= qoutationHeaderEnd; valStart++)
-                            {
-                                if (valuePair.Key == "Total")
-                                {
-                                    quoteList[valStart].Total = valuePair.Value;
-                                }
-
-                                if (valuePair.Key == "TotalValue")
-                                {
-                                    quoteList[valStart].TotalValue = valuePair.Value;
-                                }
-
-                                if (valuePair.Key == "GrossPrice")
-                                {
-                                    quoteList[valStart].GrossPrice = valuePair.Value;
-                                }
-                            }
-
-
-
-                        }
-                        quotationHeaderStart = -1;
-                        qoutationHeaderEnd = -1;
+                        detail.QuotationDetailID = lastQuoteCount;
+                        detail.QuoteOrder = orderCount;
+                        detail.Save(true,true, dataMod);
+                        lastQuoteCount += 1;
+                        orderCount = +1;
                     }
-
-
-                    if (firstHeader == false)
-                    {
-                        quotationHeaderStart = quoteCC;
-                    }
-                    qoutationHeaderEnd = quoteCC;
-
-
-
-                    firstHeader = true;
-                    firstItem = true;
+                  //  dataMod.sqlConn.Commit += SqlConn_Commit; 
                 }
-                else if (item.IsItem)
-                {
-                    if (firstItem)
-                    {
-                        sumTotals = new Dictionary<string, decimal>();
-                        sumTotals.Add("Total", item.Total);
 
-                        sumTotals.Add("TotalValue", item.TotalValue);
-                        sumTotals.Add("GrossPrice", item.GrossPrice);
-                    }
-                    else
-                    {
-                        sumTotals["Total"] = sumTotals["Total"] + item.Total;
-                        sumTotals["TotalValue"] = sumTotals["TotalValue"] + item.TotalValue;
-                        sumTotals["GrossPrice"] = sumTotals["GrossPrice"] + item.GrossPrice;
-                    }
-
-
-                    firstItem = false;
-                    firstHeader = false;
-
-
-
-                }
-                quoteCC += 1;
             }
-
-            if (firstItem == false)
+            catch (Exception ex)
             {
-                foreach (KeyValuePair<string, decimal> valuePair in sumTotals)
-                {
-                    for (int valStart = quotationHeaderStart; valStart <= qoutationHeaderEnd; valStart++)
-                    {
-                        if (valuePair.Key == "Total")
-                        {
-                            quoteList[valStart].Total = valuePair.Value;
-                        }
 
-                        if (valuePair.Key == "TotalValue")
-                        {
-                            quoteList[valStart].TotalValue = valuePair.Value;
-                        }
-
-                        if (valuePair.Key == "GrossPrice")
-                        {
-                            quoteList[valStart].GrossPrice = valuePair.Value;
-                        }
-                    }
-                }
-                quotationHeaderStart = -1;
-                qoutationHeaderEnd = -1;
+                throw ex;
             }
-
-
         }
 
-        BackgroundWorker _workerRebalance = new BackgroundWorker();
-        private void btnRebalance_Click(object sender, EventArgs e)
+        private void SqlConn_Commit(object sender, System.Data.SQLite.CommitEventArgs e)
         {
-           
-            _worker.WorkerReportsProgress = true;
-            _worker.DoWork += new System.ComponentModel.DoWorkEventHandler(rebalanceStart);
-            _worker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(rebalanceCompleted);
-            _worker.RunWorkerAsync();
+      
         }
-
-        private void rebalanceStart(object sender, DoWorkEventArgs e)
-        {
-
-            RebalanceGrid();
-        }
-
-        private void rebalanceCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            bindingSource = new System.Windows.Forms.BindingSource { DataSource = quoteList };
-            dgView.DataSource = bindingSource;
-        }
-
     }
 }

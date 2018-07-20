@@ -8,11 +8,20 @@ namespace QuotationManager.Factory
 {
     public class CommonModule
     {
-        public  enum InfoType
+        public enum InfoType
         {
             Warning = 1
-        , Error = 2
-        , Success = 3
+            , Error = 2
+            , Success = 3
+        }
+
+        public enum windowState
+        {
+            AddMain
+            , AddSub
+            , Edit
+            , Remove
+            , None
         }
     }
 }

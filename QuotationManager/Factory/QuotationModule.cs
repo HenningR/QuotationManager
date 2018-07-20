@@ -176,6 +176,37 @@ namespace QuotationManager.Factory
 
         public int QuoteOrder { get; set; }
 
+        public static int  getLastQuoteDetailCount()
+        {
+            object nCountObj = 0;
+            int nCount = 0;
+            string sql = "";
+            object value = "";
+            try
+            {
+                DatabaseModule dbMod = new DatabaseModule();
+                SQLiteParameter[] sqlParams = new SQLiteParameter[1];
+                int paramCC = 0;
+
+                sql = @"SELECT MAX(QuotationDetailID) from QuotationDetail";
+
+                //sqlParams[paramCC] = new SQLiteParameter("@Description", Description);
+                paramCC += 1;
+                nCountObj = dbMod.ExecuteScalar(sql, sqlParams);
+
+                Int32.TryParse(nCountObj.ToString(), out nCount);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return nCount;
+
+        }
+
         public static List<QuotationDetail> GetQuoteList(int QuotationID)
         {
             string sql = "";
@@ -283,14 +314,16 @@ namespace QuotationManager.Factory
                             quote.QuoteOrder = intVal;
                         }
 
+                        if (intVal != -1)
+                        {
+                            list.Add(quote);
+                        }
+
                     }
 
 
 
-                    if (intVal != -1)
-                    {
-                        list.Add(quote);
-                    }
+             
                 }
             }
             catch (Exception ex)
@@ -302,5 +335,111 @@ namespace QuotationManager.Factory
 
         }
 
+        public static int Delete(int quotationID, bool useDBMod, DatabaseModule dataMod)
+        {
+            int nExecute = 0;
+            string sql = "";
+            object value = "";
+            try
+            {
+                DatabaseModule dbMod = new DatabaseModule();
+                if (useDBMod)
+                {
+                    dbMod = dataMod;
+                }
+                SQLiteParameter[] sqlParams = new SQLiteParameter[10];
+                int paramCC = 0;
+
+                sql = @"Delete from QuotationDetail WHERE QuotationID = @QuotationID";
+
+                value = quotationID;
+                sqlParams[paramCC] = new SQLiteParameter("@QuotationID", value);
+
+                nExecute = dbMod.ExecuteNonQuery(sql, sqlParams);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return nExecute;
+        }
+
+
+        public int Save(bool isNew,bool useDBMod, DatabaseModule dataMod)
+        {
+            int nExecute = 0;
+            string sql = "";
+            object value = "";
+            try
+            {
+                DatabaseModule dbMod = new DatabaseModule();
+                if (useDBMod)
+                {
+                    dbMod = dataMod;
+                }
+                SQLiteParameter[] sqlParams = new SQLiteParameter[20];
+                int paramCC = 0;
+
+                if (isNew)
+                {
+                    sql = @"INSERT INTO QuotationDetail
+                            (QuotationDetailID,QuotationID,LevelIndex,Description     
+                            ,IsItem,Unit,Quantity,Price,Total           
+                            ,MarkupPercentage,MarkupValue,GrossPrice,ArtePercentage  
+                            ,ArteValue,TotalValue,QuoteOrder)  
+                            VALUES
+                            (@QuotationDetailID,@QuotationID,@LevelIndex,@Description     
+	                         ,@IsItem,@Unit,@Quantity,@Price,@Total           
+	                         ,@MarkupPercentage,@MarkupValue,@GrossPrice,@ArtePercentage  
+	                         ,@ArteValue,@TotalValue,@QuoteOrder)";
+                }
+
+                sqlParams[paramCC] = new SQLiteParameter("@QuotationDetailID", QuotationDetailID);
+                paramCC += 1;
+                sqlParams[paramCC] = new SQLiteParameter("@QuotationID", QuotationID);
+                paramCC += 1;
+                sqlParams[paramCC] = new SQLiteParameter("@LevelIndex", LevelIndex);
+                paramCC += 1;
+                sqlParams[paramCC] = new SQLiteParameter("@Description", Description);
+                paramCC += 1;
+                sqlParams[paramCC] = new SQLiteParameter("@IsItem", IsItem?1:0);
+                paramCC += 1;
+                sqlParams[paramCC] = new SQLiteParameter("@Unit", Unit);
+                paramCC += 1;
+                sqlParams[paramCC] = new SQLiteParameter("@Quantity", Quantity);
+                paramCC += 1;
+                sqlParams[paramCC] = new SQLiteParameter("@Price", Price);
+                paramCC += 1;
+                sqlParams[paramCC] = new SQLiteParameter("@Total", Total);
+                paramCC += 1;
+                sqlParams[paramCC] = new SQLiteParameter("@MarkupPercentage", MarkupPercentage);
+                paramCC += 1;
+                sqlParams[paramCC] = new SQLiteParameter("@MarkupValue", MarkupValue);
+                paramCC += 1;
+                sqlParams[paramCC] = new SQLiteParameter("@GrossPrice", GrossPrice);
+                paramCC += 1;
+                sqlParams[paramCC] = new SQLiteParameter("@ArtePercentage", ArtePercentage);
+                paramCC += 1;
+                sqlParams[paramCC] = new SQLiteParameter("@ArteValue", ArteValue);
+                paramCC += 1;
+                sqlParams[paramCC] = new SQLiteParameter("@TotalValue", TotalValue);
+                paramCC += 1;
+                sqlParams[paramCC] = new SQLiteParameter("@QuoteOrder", QuoteOrder);
+
+                nExecute = dbMod.ExecuteNonQuery(sql, sqlParams);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return nExecute;
+
+        }
     }
 }

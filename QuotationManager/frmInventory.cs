@@ -14,16 +14,6 @@ using static QuotationManager.Factory.CommonModule;
 
 namespace QuotationManager
 {
-    public enum windowState
-    {
-        AddMain
-        , AddSub
-        , Edit
-        , Remove
-        , None
-    }
-
-
 
     public partial class frmInventory : Form
     {
@@ -138,15 +128,16 @@ namespace QuotationManager
                     treeInventory.SelectedNode.Remove();
                 }
 
-            }else
+            }
+            else
             {
-                 showLableInfo("No tree node was selected to remove", InfoType.Warning);
+                showLableInfo("No tree node was selected to remove", InfoType.Warning);
             }
             showTreeButtons();
             currentState = windowState.None;
         }
 
-        private void populateInventoryItem(ref string validationMessage,TreeNode currentNode = null)
+        private void populateInventoryItem(ref string validationMessage, TreeNode currentNode = null)
         {
 
 
@@ -179,7 +170,7 @@ namespace QuotationManager
             currenInventoryItems.Description = txtDescription.Text;
             currenInventoryItems.IsItem = chkItem.Checked;
 
-     
+
             currenInventoryItems.MarkupPercentage = nmMarkup.Value;
 
             decimal decVal = 0;
@@ -281,7 +272,15 @@ namespace QuotationManager
         #endregion
 
         #region Events
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
 
+        private void frmInventory_Load(object sender, EventArgs e)
+        {
+
+        }
         private void addToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AddParentItem();
@@ -339,7 +338,7 @@ namespace QuotationManager
                     return;
                 }
 
-               
+
                 if (treeInventory.SelectedNode != null && treeInventory.SelectedNode.Parent != null)
                 {
                     populateInventoryItem(ref validationMessage, treeInventory.SelectedNode.Parent);
@@ -400,7 +399,7 @@ namespace QuotationManager
 
                 if (treeInventory.SelectedNode != null)
                 {
-                    populateInventoryItem(ref validationMessage,treeInventory.SelectedNode);
+                    populateInventoryItem(ref validationMessage, treeInventory.SelectedNode);
 
                     if (validationMessage != "")
                     {
@@ -558,14 +557,14 @@ namespace QuotationManager
             lblInfo.Visible = true;
             lblInfo.Refresh();
 
-            
+
             _worker.WorkerReportsProgress = true;
             _worker.DoWork += new System.ComponentModel.DoWorkEventHandler(showLableInfo);
             _worker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(showLableInfoCompleted);
             _worker.RunWorkerAsync();
         }
 
-        private void  showLableInfo(object sender, DoWorkEventArgs e)
+        private void showLableInfo(object sender, DoWorkEventArgs e)
         {
             int milliseconds = 2000;
             Thread.Sleep(milliseconds);
@@ -647,11 +646,9 @@ namespace QuotationManager
             clearItemSelected();
         }
 
+
         #endregion
 
-        private void frmInventory_Load(object sender, EventArgs e)
-        {
-
-        }
+       
     }
 }

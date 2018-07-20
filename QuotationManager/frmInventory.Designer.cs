@@ -29,16 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Rug(s)");
-            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("Underveldt");
-            System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("Wrapping");
-            System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("Loose Rugs", new System.Windows.Forms.TreeNode[] {
-            treeNode19,
-            treeNode20,
-            treeNode21});
-            System.Windows.Forms.TreeNode treeNode23 = new System.Windows.Forms.TreeNode("Node6");
-            System.Windows.Forms.TreeNode treeNode24 = new System.Windows.Forms.TreeNode("LOOSE RUGS-CMT", new System.Windows.Forms.TreeNode[] {
-            treeNode23});
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Rug(s)");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Underveldt");
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Wrapping");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Loose Rugs", new System.Windows.Forms.TreeNode[] {
+            treeNode7,
+            treeNode8,
+            treeNode9});
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Node6");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("LOOSE RUGS-CMT", new System.Windows.Forms.TreeNode[] {
+            treeNode11});
             this.treeInventory = new System.Windows.Forms.TreeView();
             this.cmbGroups = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -56,7 +56,7 @@
             this.txtPrice = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.txtUnit = new System.Windows.Forms.TextBox();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
             this.cntMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addSubToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -83,21 +83,21 @@
             // 
             this.treeInventory.Location = new System.Drawing.Point(22, 63);
             this.treeInventory.Name = "treeInventory";
-            treeNode19.Name = "Node3";
-            treeNode19.Text = "Rug(s)";
-            treeNode20.Name = "Node4";
-            treeNode20.Text = "Underveldt";
-            treeNode21.Name = "Node5";
-            treeNode21.Text = "Wrapping";
-            treeNode22.Name = "Node0";
-            treeNode22.Text = "Loose Rugs";
-            treeNode23.Name = "Node6";
-            treeNode23.Text = "Node6";
-            treeNode24.Name = "Node1";
-            treeNode24.Text = "LOOSE RUGS-CMT";
+            treeNode7.Name = "Node3";
+            treeNode7.Text = "Rug(s)";
+            treeNode8.Name = "Node4";
+            treeNode8.Text = "Underveldt";
+            treeNode9.Name = "Node5";
+            treeNode9.Text = "Wrapping";
+            treeNode10.Name = "Node0";
+            treeNode10.Text = "Loose Rugs";
+            treeNode11.Name = "Node6";
+            treeNode11.Text = "Node6";
+            treeNode12.Name = "Node1";
+            treeNode12.Text = "LOOSE RUGS-CMT";
             this.treeInventory.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode22,
-            treeNode24});
+            treeNode10,
+            treeNode12});
             this.treeInventory.Size = new System.Drawing.Size(439, 316);
             this.treeInventory.TabIndex = 0;
             this.treeInventory.Click += new System.EventHandler(this.treeInventory_Click);
@@ -266,14 +266,15 @@
             this.txtUnit.TabIndex = 1;
             this.txtUnit.Text = "ea";
             // 
-            // button4
+            // btnClose
             // 
-            this.button4.Location = new System.Drawing.Point(817, 401);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(100, 27);
-            this.button4.TabIndex = 7;
-            this.button4.Text = "Close";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnClose.Location = new System.Drawing.Point(817, 401);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(100, 27);
+            this.btnClose.TabIndex = 7;
+            this.btnClose.Text = "Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // cntMenu
             // 
@@ -426,7 +427,7 @@
             this.Controls.Add(this.btnCancelGroup);
             this.Controls.Add(this.btnAddGroup);
             this.Controls.Add(this.btnNewGroup);
-            this.Controls.Add(this.button4);
+            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.grpItem);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cmbGroups);
@@ -462,7 +463,7 @@
         private System.Windows.Forms.TextBox txtPrice;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtUnit;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.ContextMenuStrip cntMenu;
         private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
