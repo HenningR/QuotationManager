@@ -16,9 +16,10 @@ namespace QuotationManager.Factory
         public void OpenDatabase()
         {
 
-            string filename = @"C:\Development\QuotationManager\QuotationManager\Database\DrapersQuotation.db";
-            //string filename = Application.StartupPath + "\\Database\\DrapersQuotation.db";
-            sqlConnStr = "Data Source=" + filename + ";Version=3;";
+            string filename = global::QuotationManager.Properties.Settings.Default.DrapersQuotationConnectionString; // @"C:\Development\QuotationManager\QuotationManager\Database\DrapersQuotation.db";
+                                                                                                                     //string filename = Application.StartupPath + "\\Database\\DrapersQuotation.db";
+            sqlConnStr = filename + ";Version=3;";
+           // sqlConnStr = "Data Source=" + filename + ";Version=3;";
             sqlConn = new SQLiteConnection(sqlConnStr);
             sqlConn.Open();
         }
