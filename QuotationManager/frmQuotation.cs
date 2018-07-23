@@ -599,5 +599,11 @@ namespace QuotationManager
         {
       
         }
+
+        private void btnReport_Click(object sender, EventArgs e)
+        {
+            frmReport rep = new frmReport();
+            rep.Show();
+        }
     }
 }
